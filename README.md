@@ -1,4 +1,4 @@
-<p align="center">
+<!-- <p align="center">
    <a href="https://github.com/WesGtoX/project_name">
      <img src="#" alt="" title="" width="500px">
    </a>
@@ -9,7 +9,7 @@
     </a>
 </p>
 
------------------
+----------------- -->
 
 # Paint JS
 

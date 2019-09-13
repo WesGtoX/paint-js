@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <title>Paint JS</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="toolbar">
+            <a href="#" id="open" onclick="OpenImage()">
+                <img src="static/icons/open-icon.png" alt="">
+            </a>
+            <a href="#" id="save" onclick="SaveImage()">
+                <img src="static/icons/save-icon.png" alt="">
+            </a>
+            <a href="#" id="brush" onclick="ChangeTool('brush')">
+                <img src="static/icons/brush-icon.png" alt="">
+            </a>
+            <a href="#" id="line" onclick="ChangeTool('line')">
+                <img src="static/icons/line-icon.png" alt="">
+            </a>
+            <a href="#" id="rectangle" onclick="ChangeTool('rectangle')">
+                <img src="static/icons/rectangle-icon.png" alt="">
+            </a>
+            <a href="#" id="circle" onclick="ChangeTool('circle')">
+                <img src="static/icons/circle-icon.png" alt="">
+            </a>
+            <a href="#" id="ellipse" onclick="ChangeTool('ellipse')">
+                <img src="static/icons/ellipse-icon.png" alt="">
+            </a>
+            <a href="#" id="polygon" onclick="ChangeTool('polygon')">
+                <img src="static/icons/polygon-icon.png" alt="">
+            </a>
+        </div>
+        <br>
+
+        <canvas id="my-canvas" width="600" height="600"></canvas>
+
+        <div id="img-data-div">
+            <a href="#" id="img-file" downoad="image.png">Download Image</a>
+        </div>
+    </div>
+    
+    <script src="static/js/main.js"></script>
+</body>
+</html>
