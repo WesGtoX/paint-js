@@ -17,6 +17,14 @@ let currentTool = 'brush'
 let canvasWidth = 600
 let canvasHeight = 600
 
+// Stores whether I'm currently using brush
+let usingBrush = false
+// Stores line x & ys used to make brush lines
+let brushXPoints = new Array()
+let brushYPoints = new Array()
+// Stores whether mouse is down
+let brushDownPos = new Array()
+
 // Stores size data used to create rubber band shapes
 // that will redraw as the user moves the mouse
 class ShapeBoundingBox {
@@ -162,16 +170,86 @@ function radiansToDegress(rad) {
 }
 
 // Convert degrees to radians
-function degressToRadians(degrees) {
+function degreesToRadians(degrees) {
     return degrees * (Math.PI / 180)
+}
+
+function getPolygonPoints() {
+    // Get angle in radians based on x & y of mouse location
+    let angle =  degreesToRadians(getAngleUsingXAndY(loc.x, loc.y))
+
+    // X & Y for the X & Y point representing the radius is equal to
+    // the X & Y of the bounding rubberband box
+    let radiusX = shapeBoundingBox.width
+    let radiusY = shapeBoundingBox.height
+    // Stores all points in the polygon
+    let polygonPoints = []
+
+    // Each point in the polygon is found by breaking the 
+    // parts of the polygon into triangles
+    // Then I can use the known angle and adjacent side length
+    // to find the X = mouseLoc.x + radiusX * Sin(angle)
+    // You find the Y = mouseLoc.y + radiusY * Cos(angle)
+    for(let i = 0; i < polygonSides; i++) {
+        polygonPoints.push(new PolygonPoint(loc.x + radiusX * Math.sin(angle),
+        loc.y - radiusY * Math.cos(angle)))
+
+        // 2 * PI equals 360 degrees
+        // Divide 360 into parts based on how many polygon 
+        // sides you want 
+        angle += 2 * Math.PI / polygonSides
+    }
+    return polygonPoints
+}
+
+// Get the polygon points and draw the polygon
+function getPolygon() {
+    let polygonPoints = getPolygonPoints()
+    ctx.beginPath()
+    ctx.moveTo(polygonPoints[0].x, polygonPoints[0].y)
+    for (let i = 1; i < polygonSides; i++) {
+        ctx.lineTo(polygonPoints[i].x, polygonPoints[i].y)
+    }
+    ctx.closePath()
 }
 
 // Draw rubberband shape
 function drawRubberbandShape(loc) {
     ctx.strokeStyle = strokeColor
     ctx.fillStyle = fillColor
-    ctx.strokeRect(shapeBoundingBox.left, shapeBoundingBox.top,
-        shapeBoundingBox.width, shapeBoundingBox.height)
+
+    if (currentTool === "brush") {
+        // Create paint brush
+        DrawBrush()
+    } else if (currentTool === "line") {
+        // Draw Line
+        ctx.beginPath()
+        ctx.moveTo(mousedown.x, mousedown.y)
+        ctx.lineTo(loc.x, loc.y)
+        ctx.stroke()
+    } else if (currentTool === "rectangle") {
+        // Creates rectangles
+        ctx.strokeRect(shapeBoundingBox.left, shapeBoundingBox.top,
+            shapeBoundingBox.width, shapeBoundingBox.height)
+    } else if (currentTool === "circle") {
+        // Create circles
+        let radius = shapeBoundingBox.width
+        ctx.beginPath()
+        ctx.arc(mousedown.x, mousedown.y, radius, 0, Math.PI * 2)
+        ctx.stroke()
+    } else if (currentTool === "ellipse") {
+        // Create ellipses
+        // ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle)
+        let radiusX = shapeBoundingBox.width / 2
+        let radiusY = shapeBoundingBox.height / 2
+        ctx.beginPath()
+        ctx.ellipse(mousedown.x, mousedown.y, radiusX, radiusY, Math.PI / 4, 0, Math.PI * 2)
+        ctx.stroke()
+    } else if (currentTool === "polygon") {
+        // Create polygons
+        getPolygon()
+        ctx.stroke()
+    }
 }
 
 // Update rubberband on move
@@ -184,11 +262,38 @@ function UpdateRubberbandOnMove(loc) {
     drawRubberbandShape(loc)
 }
 
+// Store each point as the mouse moves and whether the mouse
+// button is currently being dragged
+function AddBrushPoint(x, y, mouseDown) {
+    brushXPoints.push(x)
+    brushYPoints.push(y)
+    // Store true that mouse is down
+    brushDownPos.push(mouseDown)
+}
+
+// Cycle through all brush points and connect them with lines
+function DrawBrush() {
+    for (let i = 1; i < brushXPoints.length; i++) {
+        ctx.beginPath()
+
+        // Check if the mouse button was down at this point
+        // and if so continue drawing
+        if (brushDownPos[i]) {
+            ctx.moveTo(brushXPoints[i-1], brushYPoints[i-1])
+        } else {
+            ctx.moveTo(brushXPoints[i]-1, brushYPoints[i])
+        }
+        ctx.lineTo(brushXPoints[i], brushYPoints[i])
+        ctx.closePath()
+        ctx.stroke()
+    }
+}
+
 // ReactToMouseDown
 function ReactToMouseDown(e) {
     // Change the mouse pointer to a crosshair
-    canvas.style.cursor = 'crosshair'
-    // Store location
+    canvas.style.cursor = "crosshair"
+    // Store location 
     loc = GetMousePosition(e.clientX, e.clientY)
     // Save the current canvas image
     SaveCanvasImage()
@@ -197,22 +302,38 @@ function ReactToMouseDown(e) {
     mousedown.y = loc.y
     // Store that yes the mouse is being held down
     dragging = true
+
+    // Brush will store points in an array
+    if (currentTool === 'brush') {
+        usingBrush = true
+        AddBrushPoint(loc.x, loc.y)
+    }
 }
 
 // ReactToMouseMove
 function ReactToMouseMove(e) {
-    canvas.style.cursor = 'crosshair'
+    canvas.style.cursor = "crosshair"
     loc = GetMousePosition(e.clientX, e.clientY)
 
-    if (dragging) {
+    // If using brush tool and dragging store each point
+    if (currentTool === 'brush' && dragging && usingBrush) {
+        // Throw away brush drawings that occur outside of the canvas
+        if (loc.x > 0 && loc.x < canvasWidth && loc.y > 0 && loc.y < canvasHeight) {
+            AddBrushPoint(loc.x, loc.y, true)
+        }
         RedrawCanvasImage()
-        UpdateRubberbandOnMove(loc)
+        DrawBrush()
+    } else {
+        if (dragging) {
+            RedrawCanvasImage()
+            UpdateRubberbandOnMove(loc)
+        }
     }
 }
 
 // ReactToMouseUp
 function ReactToMouseUp(e) {
-    canvas.style.cursor = 'default'
+    canvas.style.cursor = "default"
     loc = GetMousePosition(e.clientX, e.clientY)
     RedrawCanvasImage()
     UpdateRubberbandOnMove(loc)
@@ -220,7 +341,7 @@ function ReactToMouseUp(e) {
     usingBrush = false
 }
 
-// Save image
+// Saves the image in your default download directory
 function SaveImage() {
     // Get a reference to the link element 
     var imageFile = document.getElementById("img-file")
@@ -235,7 +356,7 @@ function OpenImage() {
     let img = new Image()
     // Once the image is loaded clear the canvas and draw it
     img.onload = function() {
-        ctx.clearRect(0,0,canvas.width, canvas.height)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(img, 0, 0)
     }
     img.src = 'image.png'

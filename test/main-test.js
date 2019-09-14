@@ -185,7 +185,7 @@ function getPolygonPoints() {
     // Then I can use the known angle and adjacent side length
     // to find the X = mouseLoc.x + radiusX * Sin(angle)
     // You find the Y = mouseLoc.y + radiusY * Cos(angle)
-    for(let i = 0 i < polygonSides i++) {
+    for(let i = 0; i < polygonSides; i++) {
         polygonPoints.push(new PolygonPoint(loc.x + radiusX * Math.sin(angle),
         loc.y - radiusY * Math.cos(angle)))
 
@@ -202,7 +202,7 @@ function getPolygon() {
     let polygonPoints = getPolygonPoints()
     ctx.beginPath()
     ctx.moveTo(polygonPoints[0].x, polygonPoints[0].y)
-    for(let i = 1 i < polygonSides i++) {
+    for (let i = 1; i < polygonSides; i++) {
         ctx.lineTo(polygonPoints[i].x, polygonPoints[i].y)
     }
     ctx.closePath()
@@ -212,6 +212,7 @@ function getPolygon() {
 function drawRubberbandShape(loc) {
     ctx.strokeStyle = strokeColor
     ctx.fillStyle = fillColor
+
     if(currentTool === "brush") {
         // Create paint brush
         DrawBrush()
@@ -265,12 +266,12 @@ function AddBrushPoint(x, y, mouseDown) {
 
 // Cycle through all brush points and connect them with lines
 function DrawBrush() {
-    for(let i = 1 i < brushXPoints.length i++) {
+    for (let i = 1; i < brushXPoints.length; i++) {
         ctx.beginPath()
 
         // Check if the mouse button was down at this point
         // and if so continue drawing
-        if(brushDownPos[i]) {
+        if (brushDownPos[i]) {
             ctx.moveTo(brushXPoints[i-1], brushYPoints[i-1])
         } else {
             ctx.moveTo(brushXPoints[i]-1, brushYPoints[i])
@@ -306,9 +307,9 @@ function ReactToMouseMove(e) {
     loc = GetMousePosition(e.clientX, e.clientY)
 
     // If using brush tool and dragging store each point
-    if(currentTool === 'brush' && dragging && usingBrush) {
+    if (currentTool === 'brush' && dragging && usingBrush) {
         // Throw away brush drawings that occur outside of the canvas
-        if(loc.x > 0 && loc.x < canvasWidth && loc.y > 0 && loc.y < canvasHeight) {
+        if (loc.x > 0 && loc.x < canvasWidth && loc.y > 0 && loc.y < canvasHeight) {
             AddBrushPoint(loc.x, loc.y, true)
         }
         RedrawCanvasImage()
@@ -344,7 +345,7 @@ function OpenImage() {
     let img = new Image()
     // Once the image is loaded clear the canvas and draw it
     img.onload = function() {
-        ctx.clearRect(0,0,canvas.width, canvas.height)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(img,0,0)
     }
     img.src = 'image.png'
