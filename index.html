@@ -4,46 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="static/css/style.css">
     <title>Paint JS</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="static/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="static/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="static/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="static/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="static/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="static/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="static/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="static/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="static/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="static/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="static/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/favicon/favicon-16x16.png">
+    <link rel="manifest" href="static/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="static/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
 </head>
 <body>
-    <div class="wrapper">
-        <div class="toolbar">
-            <a href="#" id="open" onclick="OpenImage()">
-                <img src="static/icons/open-icon.png" alt="">
-            </a>
-            <a href="#" id="save" onclick="SaveImage()">
-                <img src="static/icons/save-icon.png" alt="">
-            </a>
-            <a href="#" id="brush" onclick="ChangeTool('brush')">
-                <img src="static/icons/brush-icon.png" alt="">
-            </a>
-            <a href="#" id="line" onclick="ChangeTool('line')">
-                <img src="static/icons/line-icon.png" alt="">
-            </a>
-            <a href="#" id="rectangle" onclick="ChangeTool('rectangle')">
-                <img src="static/icons/rectangle-icon.png" alt="">
-            </a>
-            <a href="#" id="circle" onclick="ChangeTool('circle')">
-                <img src="static/icons/circle-icon.png" alt="">
-            </a>
-            <a href="#" id="ellipse" onclick="ChangeTool('ellipse')">
-                <img src="static/icons/ellipse-icon.png" alt="">
-            </a>
-            <a href="#" id="polygon" onclick="ChangeTool('polygon')">
-                <img src="static/icons/polygon-icon.png" alt="">
-            </a>
-        </div>
-        <br>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a id="logo" class="navbar-brand" href="#">
+            <img class="logo-paint-js" src="static/logo.png" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a href="#" id="open" class="badge badge-dark" onclick="OpenImage()"><img src="static/icons/open-icon.png" alt=""></a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="save" class="badge badge-dark" onclick="SaveImage()"><img src="static/icons/save-icon.png" alt=""></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a href="#" id="brush" class="badge badge-dark" onclick="ChangeTool('brush')"><img src="static/icons/brush-icon.png" alt=""></a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="line" class="badge badge-dark" onclick="ChangeTool('line')"><img src="static/icons/line-icon.png" alt=""></a>
+                </li>
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle badge badge-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="static/icons/forms-icon.png" alt="">
+                    </a>
+                    
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a href="#" id="rectangle" class="dropdown-item" onclick="ChangeTool('rectangle')">
+                            <img src="static/icons/rectangle-icon.png" alt="">
+                        </a>
+                        <a href="#" id="circle" class="dropdown-item" onclick="ChangeTool('circle')">
+                            <img src="static/icons/circle-icon.png" alt="">
+                        </a>
+                        <a href="#" id="ellipse" class="dropdown-item" onclick="ChangeTool('ellipse')">
+                            <img src="static/icons/ellipse-icon.png" alt="">
+                        </a>
+                        <a href="#" id="polygon" class="dropdown-item" onclick="ChangeTool('polygon')">
+                            <img src="static/icons/polygon-icon.png" alt="">
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle badge badge-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="static/icons/download-icon.png" alt="">
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a href="#" id="img-file" class="badge badge-dark" download="image.jpg">
+                            <img src="static/icons/jpg-icon.png" alt="">
+                        </a>
+                        <a href="#" id="img-file" class="badge badge-dark" download="image.png">
+                            <img src="static/icons/png-icon.png" alt="">
+                        </a>
+                        <a href="#" id="img-file" class="badge badge-dark" download="image.bmp">
+                            <img src="static/icons/bmp-icon.png" alt="">
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br>
+    <div class="container-fluid canvas">
         <canvas id="my-canvas" width="600" height="600"></canvas>
-
-        <div id="img-data-div">
-            <a href="#" id="img-file" download="image.png">Download Image</a>
-        </div>
     </div>
-    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="static/js/main.js"></script>
 </body>
 </html>
