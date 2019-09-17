@@ -25,25 +25,6 @@ let brushYPoints = new Array()
 // Stores whether mouse is down
 let brushDownPos = new Array()
 
-
-
-// function resize(canvas) {
-//     // Lookup the size the browser is displaying the canvas.
-//     var displayWidth  = canvas.clientWidth;
-//     var displayHeight = canvas.clientHeight;
-   
-//     // Check if the canvas is not the same size.
-//     if (canvas.width  != displayWidth ||
-//         canvas.height != displayHeight) {
-   
-//       // Make the canvas the same size
-//       canvas.width  = displayWidth;
-//       canvas.height = displayHeight;
-//     }
-//   }
-
-
-
 // Stores size data used to create rubber band shapes
 // that will redraw as the user moves the mouse
 class ShapeBoundingBox {
@@ -112,7 +93,7 @@ function ChangeTool(toolClicked) {
     document.getElementById("rectangle").className = ""
     document.getElementById("circle").className = ""
     document.getElementById("ellipse").className = ""
-    document.getElementById("polygon").className = ""
+    document.getElementById("hexagon").className = ""
     document.getElementById("arrow").className = ""
     document.getElementById("triangle").className = ""
     document.getElementById("pentagon").className = ""
