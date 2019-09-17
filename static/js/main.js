@@ -113,6 +113,10 @@ function ChangeTool(toolClicked) {
     document.getElementById("circle").className = ""
     document.getElementById("ellipse").className = ""
     document.getElementById("polygon").className = ""
+    document.getElementById("arrow").className = ""
+    document.getElementById("triangle").className = ""
+    document.getElementById("pentagon").className = ""
+
     // Highlight the last selected tool on toolbar
     document.getElementById(toolClicked).className = "selected"
     // Change current tool used for drawing
@@ -264,8 +268,24 @@ function drawRubberbandShape(loc) {
         ctx.beginPath()
         ctx.ellipse(mousedown.x, mousedown.y, radiusX, radiusY, Math.PI / 4, 0, Math.PI * 2)
         ctx.stroke()
-    } else if (currentTool === "polygon") {
-        // Create polygons
+    } else if (currentTool === "hexagon") {
+        // Create hexagons
+        polygonSides = 6
+        getPolygon()
+        ctx.stroke()
+    } else if (currentTool === "arrow") {
+        // Create arrows
+        ctx.beginPath()
+        GetArrow(ctx, mousedown.x, mousedown.y, loc.x, loc.y)
+        ctx.stroke()
+    } else if (currentTool === "triangle"){
+        // Create triangles
+        polygonSides = 3
+        getPolygon()
+        ctx.stroke()
+    } else if (currentTool === "pentagon"){
+        // Create pentagons
+        polygonSides = 5
         getPolygon()
         ctx.stroke()
     }
@@ -359,6 +379,20 @@ function ReactToMouseUp(e) {
     dragging = false
     usingBrush = false
 }
+
+function GetArrow(context, fromx, fromy, tox, toy) {
+    var headlen = 10; // length of head in pixels
+    var dx = tox - fromx;
+    var dy = toy - fromy;
+    var angle = Math.atan2(dy, dx);
+    // Create arrow
+    context.moveTo(fromx, fromy);
+    context.lineTo(tox, toy);
+    context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+    context.moveTo(tox, toy);
+    context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+}
+
 
 // Saves the image in your default download directory
 function SaveImage() {
