@@ -244,7 +244,7 @@ function getPolygon() {
     }
     ctx.closePath()
 
-    if (fillState == true){
+    if (fillState == true) {
         ctx.stroke();
         ctx.fill();
     } else {
@@ -269,7 +269,7 @@ function drawRubberbandShape(loc) {
         ctx.stroke()
     } else if (currentTool === "rectangle") {
         // Creates rectangles
-        if (fillState == true){
+        if (fillState == true) {
             ctx.strokeRect(shapeBoundingBox.left, shapeBoundingBox.top,
                 shapeBoundingBox.width, shapeBoundingBox.height)
             ctx.fillRect(shapeBoundingBox.left, shapeBoundingBox.top,
@@ -284,7 +284,7 @@ function drawRubberbandShape(loc) {
         ctx.beginPath()
         ctx.arc(mousedown.x, mousedown.y, radius, 0, Math.PI * 2)
         
-        if(fillState == true){
+        if(fillState == true) {
             ctx.stroke()
             ctx.fill();
         } else {
@@ -298,7 +298,7 @@ function drawRubberbandShape(loc) {
         ctx.beginPath()
         ctx.ellipse(mousedown.x, mousedown.y, radiusX, radiusY, Math.PI / 100, 0, Math.PI * 2)
         
-        if (fillState == true){
+        if (fillState == true) {
             ctx.stroke()
             ctx.fill();
         } else {
@@ -314,15 +314,15 @@ function drawRubberbandShape(loc) {
         ctx.beginPath()
         GetArrow(mousedown.x, mousedown.y, loc.x, loc.y)
         ctx.stroke()
-    } else if (currentTool === "triangle"){
+    } else if (currentTool === "triangle") {
         // Create triangles
         polygonSides = 3
         getPolygon()
         ctx.stroke()
-    } else if (currentTool === "diamond"){
+    } else if (currentTool === "diamond") {
         // Create diamond
         drawDiamond(loc.x, loc.y, shapeBoundingBox.width, shapeBoundingBox.height)
-    } else if (currentTool === "pentagon"){
+    } else if (currentTool === "pentagon") {
         // Create pentagons
         polygonSides = 5
         getPolygon()
@@ -338,9 +338,9 @@ function drawRubberbandShape(loc) {
         // Create a star with five spikes
         starSpikes = 5
         drawStar(mousedown.x, mousedown.y, starSpikes, loc.x - mousedown.x, loc.y - mousedown.y)
-    } else if (currentTool === "letterL"){
+    } else if (currentTool === "letterL") {
         DrawL(loc.x)
-    } else if (currentTool === "letterW"){
+    } else if (currentTool === "letterW") {
         DrawW(loc.x)
     }
 }
@@ -424,7 +424,7 @@ function ReactToMouseDown(e) {
     if (currentTool === 'brush') {
         usingBrush = true
         AddBrushPoint(loc.x, loc.y)
-    } else if (currentTool === 'eraser'){
+    } else if (currentTool === 'eraser') {
         erasing = true
         AddErasePoint(loc.x, loc.y)
     }
@@ -462,27 +462,27 @@ function ReactToMouseUp(e) {
 }
 
 // Not working
-function DrawL(x){
+function DrawL(x) {
     ctx.font = `${x - mousedown.x}px times new roman`
-    if(canvas.getContext){
+    if(canvas.getContext) {
         window.addEventListener('keydown', moveobj, true);
-        if(fillState == true){
+        if(fillState == true) {
             ctx.strokeText('L', mousedown.x, mousedown.y)    
             ctx.fillText('L', mousedown.x, mousedown.y)
-        }else{
+        } else{
             ctx.strokeText('L', mousedown.x, mousedown.y)
         }
     }
 }
 
-function DrawW(x){
+function DrawW(x) {
     ctx.font = `${x - mousedown.x}px times new roman`
-    if(canvas.getContext){
+    if(canvas.getContext) {
         window.addEventListener('keydown', moveobj, true);
-        if(fillState == true){
+        if(fillState == true) {
             ctx.strokeText('W', mousedown.x, mousedown.y)    
             ctx.fillText('W', mousedown.x, mousedown.y)
-        }else{
+        } else{
             ctx.strokeText('W', mousedown.x, mousedown.y)
         }
     }
@@ -503,14 +503,14 @@ function GetArrow(fromx, fromy, tox, toy) {
     ctx.stroke()
 }
 
-function BezierCurve(x, y){
+function BezierCurve(x, y) {
     ctx.beginPath()
     ctx.moveTo(mousedown.x, mousedown.y)
     ctx.bezierCurveTo(mousedown.x, x - mousedown.x, x, y - mousedown.y, y, mousedown.y)
     ctx.stroke()
 }
 
-function drawDiamond(x, y, width, height){
+function drawDiamond(x, y, width, height) {
     ctx.beginPath();
     ctx.moveTo(x, y);        
     // top left edge
@@ -522,53 +522,15 @@ function drawDiamond(x, y, width, height){
     // closing the path automatically creates
     // the top right edge
     ctx.closePath();
-    if(fillState == true){
+    if (fillState == true) {
         ctx.fill();
-    }else{
+    } else {
         ctx.stroke();
     }
     ctx.restore();
 }
 
-// function translation(){
-//         ctx.fillStyle = "#ffffff";
-//         ctx.rect(3, 5, 600, 350);
-//         ctx.fill();
-//         console.log(evt.keyCode)
-//         switch (evt.keyCode) {
-//             case 65:
-//                 // ctx.restore();
-//                 ctx.save();
-//                 ctx.translate(-5, 0);
-//                 drawCar();
-//                 break;
-//             case 68:
-//                 ctx.save();
-//                 ctx.translate(5, 0);
-//                 drawCar();
-//                 break;
-//             case 83:
-//                 ctx.save()
-//                 ctx.translate(0, 5);
-//                 drawCar()
-//                 break;
-//             case 87:
-//                 ctx.save()
-//                 ctx.translate(0, -5);
-//                 drawCar()
-//                 break;
-//         }
-// }
-
-function rotation(){
-}
-
-function scale(){
-}
-
-
-
-function drawStar(cx,cy,spikes,outerRadius,innerRadius){
+function drawStar(cx,cy,spikes,outerRadius,innerRadius) {
     var rot=Math.PI/2*3;
     var x=cx;
     var y=cy;
@@ -576,7 +538,7 @@ function drawStar(cx,cy,spikes,outerRadius,innerRadius){
 
     ctx.beginPath();
     ctx.moveTo(cx,cy-outerRadius)
-    for(i=0;i<spikes;i++){
+    for (i=0; i < spikes; i++) {
       x=cx+Math.cos(rot)*outerRadius;
       y=cy+Math.sin(rot)*outerRadius;
       ctx.lineTo(x,y)
@@ -589,14 +551,14 @@ function drawStar(cx,cy,spikes,outerRadius,innerRadius){
     }
     ctx.lineTo(cx,cy-outerRadius);
     ctx.closePath();
-    if(fillState == true){
+    if (fillState == true) {
         ctx.fill();
-    }else{
+    } else {
         ctx.stroke();
     }
 }
 
-function drawHouse(){
+function drawHouse() {
     // Remove highlight the last selected tool on toolbar
     removeSelected()
 
@@ -651,7 +613,6 @@ function drawHouse(){
     ctx.beginPath();
     ctx.arc(215,510,5,0,2*Math.PI);
     ctx.stroke();
-    
 }
 
 document.addEventListener('keydown', moveobj)
@@ -668,61 +629,60 @@ function moveobj(evt) {
         // ctx.restore();
         ctx.save();
         ctx.translate(-5, 0);
-        if(currentTool === 'letterL'){
+        if (currentTool === 'letterL') {
             DrawL()
-        }else if(currentTool === 'letterW'){
+        } else if(currentTool === 'letterW') {
             DrawW()
-        }else{
+        } else{
             drawCar()
         }
         break;
     case 68:
         ctx.save();
         ctx.translate(5, 0);
-        if(currentTool === 'letterL'){
+        if (currentTool === 'letterL') {
             DrawL()
-        }else if(currentTool === 'letterW'){
+        } else if (currentTool === 'letterW') {
             DrawW()
-        }else{
+        } else{
             drawCar()
         }
         break;
     case 83:
         ctx.save()
         ctx.translate(0, 5);
-        if(currentTool === 'letterL'){
+        if(currentTool === 'letterL') {
             DrawL()
-        }else if(currentTool === 'letterW'){
+        } else if(currentTool === 'letterW') {
             DrawW()
-        }else{
+        } else{
             drawCar()
         }
         break;
     case 87:
         ctx.save()
         ctx.translate(0, -5);
-        if(currentTool === 'letterL'){
+        if(currentTool === 'letterL') {
             DrawL()
-        }else if(currentTool === 'letterW'){
+        } else if(currentTool === 'letterW') {
             DrawW()
-        }else{
+        } else{
             drawCar()
         }
         break;
     case 107:
         ctx.save()
-        
-        if(currentTool === 'letterL'){
+        if (currentTool === 'letterL') {
             ctx.translate(mousedown.x, mousedown.y)
             ctx.rotate((Math.PI/180) * 2)
             ctx.translate(-mousedown.x, -mousedown.y)
             DrawL()
-        }else if(currentTool === 'letterW'){
+        } else if(currentTool === 'letterW') {
             ctx.translate(mousedown.x, mousedown.y)
             ctx.rotate((Math.PI/180) * 2)
             ctx.translate(-mousedown.x, -mousedown.y)
             DrawW()
-        }else{
+        } else{
             ctx.translate(95, 150)
             ctx.rotate((Math.PI/180) * 2)
             ctx.translate(-95, -150)
@@ -732,20 +692,18 @@ function moveobj(evt) {
     default:
         break;
     }
-
-
 }
 
 var myImage = new Image();
 var back = new Image();
 
-function drawCar(){
+function drawCar() {
     // Remove highlight the last selected tool on toolbar
     removeSelected()
 
     ctx.strokeStyle = strokeColor
     ctx.fillStyle = fillColor
-    if(canvas.getContext){
+    if(canvas.getContext) {
         window.addEventListener('keydown', moveobj, true);
         //body
         ctx.beginPath();
@@ -798,15 +756,14 @@ function drawCar(){
         ctx.fill();      
         ctx.closePath() 
     }
-    
 }
 
 // Set the new state of the checkbox
-function setFillState(){
+function setFillState() {
     fillState = getFillState.checked
 }
 
-function clearCanvas(){
+function clearCanvas() {
     // Remove highlight the last selected tool on toolbar
     removeSelected()
 
@@ -814,7 +771,7 @@ function clearCanvas(){
 }
 
 // Define the new stroke and fill color when the color inputs are changed
-function setStrokeFillColor(){
+function setStrokeFillColor() {
     strokeColor = getStrokeColor.value
     fillColor = getFillColor.value
 }

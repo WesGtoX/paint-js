@@ -61,17 +61,17 @@
             </ul>
             <ul class="navbar-nav">
                 <!-- Pick a stroke color to you draw -->
-                <li class="nav-item active">
-                    <input type="color" name="strokeColor" id="strokeColor" onmouseout="setStrokeFillColor()">
+                <li class="nav-item active badge badge-dark">
+                    <input type="color" class="fill-color-state input-control" name="strokeColor" id="strokeColor" onmouseout="setStrokeFillColor()">
                 </li>
                 <!-- Pick a fill color to you draw -->
-                <li class="nav-item active">
-                    <input type="color" name="fillColor" id="fillColor" onmouseout="setStrokeFillColor()">
+                <li class="nav-item active badge badge-dark">
+                    <input type="color" class="fill-color-state input-control" name="fillColor" id="fillColor" onmouseout="setStrokeFillColor()">
                 </li>
                 <!-- Activate the fillstate -->
-                <li class="nav-item active">
-                    <input type="checkbox" name="fillState" id="fillState" onclick="setFillState()">
-                    Preenchimento
+                <li class="nav-item active text-center badge badge-dark">
+                    <input type="checkbox" class="fill-color-state" name="fillState" id="fillState" onclick="setFillState()">
+                    <p>FILL</p>
                 </li>
                 <li class="nav-item active">
                     <!-- Selecte the brush tool -->
@@ -212,12 +212,11 @@
             </button>
         </div>
         <div class="modal-body text-center">
-            <p><strong>Boccardo de Andrade</strong><br>Code: 827.969</p>
+            <p><strong>Lenin Boccardo de Andrade</strong><br>Code: 827.969</p>
             <p><strong>Wesley de Oliveira Mendes</strong><br>Code: 828.507</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
         </div>
         </div>
     </div>
