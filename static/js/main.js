@@ -21,7 +21,7 @@ let fillState = getFillState.checked
 //Tool currently using
 let currentTool = 'brush'
 let canvasWidth = 1024
-let canvasHeight = 600
+let canvasHeight = 800
 let starSpikes = 5
 
 // Stores whether I'm currently using brush
@@ -103,31 +103,34 @@ function setupCanvas() {
 }
 
 function ChangeTool(toolClicked) {
-    document.getElementById("open").className = ""
-    document.getElementById("save").className = ""
-    document.getElementById('eraser').className = ""
-    document.getElementById("brush").className = ""
-    document.getElementById("line").className = ""
-    document.getElementById('curve').className = ""
-    document.getElementById('letterL').className = ""
-    document.getElementById('letterW').className = ""
-    document.getElementById('car').className = ""
-    document.getElementById('house').className = ""
-    document.getElementById("rectangle").className = ""
-    document.getElementById("circle").className = ""
-    document.getElementById("ellipse").className = ""
-    document.getElementById("hexagon").className = ""
-    document.getElementById("arrow").className = ""
-    document.getElementById("triangle").className = ""
-    document.getElementById("pentagon").className = ""
-    document.getElementById("diamond").className = ""
-    document.getElementById('fourStar').className = ""
-    document.getElementById('fiveStar').className = ""
+    // Remove highlight the last selected tool on toolbar
+    removeSelected()
 
     // Highlight the last selected tool on toolbar
-    document.getElementById(toolClicked).className = "selected"
+    let element = document.getElementById(toolClicked);
+    element.classList.add("selected");
+
     // Change current tool used for drawing
     currentTool = toolClicked
+}
+
+// Remove highlight the last selected tool on toolbar
+function removeSelected() {
+    arrayClass = [
+        'open', 'save', 'eraser', 'brush', 'line', 'curve', 
+        'letterL', 'letterW', 'car', 'house', 'rectangle', 
+        'circle', 'ellipse', 'hexagon', 'arrow', 'triangle', 
+        'pentagon', 'diamond', 'fourStar', 'fiveStar'
+    ]
+
+    arrayClass.forEach(element => {
+        let toolClass = document.getElementById(element)
+        try {
+            toolClass.classList.remove("selected");
+        } catch {
+            console.log('ERROR')
+        }
+    });
 }
 
 // Returns mouse x & y position based on canvas position in page
@@ -557,6 +560,9 @@ function drawStar(cx,cy,spikes,outerRadius,innerRadius){
 }
 
 function drawHouse(){
+    // Remove highlight the last selected tool on toolbar
+    removeSelected()
+
     ctx.strokeStyle = strokeColor
     ctx.fillStyle = fillColor
 
@@ -612,6 +618,9 @@ function drawHouse(){
 }
 
 function drawCar(){
+    // Remove highlight the last selected tool on toolbar
+    removeSelected()
+
     ctx.strokeStyle = strokeColor
     ctx.fillStyle = fillColor
 
@@ -664,7 +673,10 @@ function setFillState(){
 }
 
 function clearCanvas(){
-    ctx.clearRect(0, 0, canvasHeight, canvasWidth)
+    // Remove highlight the last selected tool on toolbar
+    removeSelected()
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 }
 
 // Define the new stroke and fill color when the color inputs are changed
@@ -673,15 +685,18 @@ function setStrokeFillColor(){
     fillColor = getFillColor.value
 }
 
-
 // Saves the image in your default download directory
-function SaveImage() {
+function SaveImage(type) {
+    console.log(type)
     // Get a reference to the link element 
-    let imageFile = document.getElementById("img-file")
+    let imageFile = document.getElementById("img-file-" + type)
+    console.log(type)
     // Set that you want to download the image when link is clicked
-    imageFile.setAttribute('download', 'image.png')
+    imageFile.setAttribute('download', 'image.' + type)
+    console.log(type)
     // Reference the image in canvas for download
     imageFile.setAttribute('href', canvas.toDataURL())
+    console.log(type)
 }
 
 // Open image

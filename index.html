@@ -29,7 +29,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a id="logo" class="navbar-brand" href="#">
-            <img class="logo-paint-js" src="static/logo.png" alt="">
+            <img class="logo-paint-js" src="static/logo.png" alt="Logo" title="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -38,98 +38,140 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a href="#" id="open" class="badge badge-dark" onclick="OpenImage()"><img src="static/icons/open-icon.png" alt=""></a>
-                </li>
-                <li class="nav-item active">
-                    <a href="#" id="save" class="badge badge-dark" onclick="SaveImage()"><img src="static/icons/save-icon.png" alt=""></a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                        <input type="color" name="strokeColor" id="strokeColor" onmouseout="setStrokeFillColor()">
-                </li>
-                <li class="nav-item active">
-                    <input type="color" name="fillColor" id="fillColor" onmouseout="setStrokeFillColor()">
-                </li>
-                <li class="nav-item active">
-                    <input type="checkbox" name="fillState" id="fillState" onclick="setFillState()">
-                    <a href="">Preenchimento</a>
-                </li>
-                <li class="nav-item active">
-                    <a href="#" id="brush" class="badge badge-dark" onclick="ChangeTool('brush')">
-                        <img src="static/icons/brush-icon.png" alt="">
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="#" id="eraser" class="badge badge-dark" onclick="ChangeTool('eraser')">
-                        <img src="static/icons/eraser-icon.png" alt="">
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="#" id="line" class="badge badge-dark" onclick="ChangeTool('line')">
-                        <img src="static/icons/line-icon.png" alt="">
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="#" id="curve" class="badge badge-dark" onclick="ChangeTool('curve')">
-                        <img src="static/icons/curve-icon.png" alt="">
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="#" id="letterL" class="badge badge-dark" onclick="ChangeTool('letterL')">
-                        <img src="static/icons/letter-l-icon.png" alt="">
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="#" id="letterW" class="badge badge-dark" onclick="ChangeTool('letterW')">
-                        <img src="static/icons/letter-w-icon.png" alt="">
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="#" id="car" class="badge badge-dark" onclick="drawCar()">
-                        <img src="static/icons/car-icon.png" alt="">
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="#" id="house" class="badge badge-dark" onclick="drawHouse()">
-                        <img src="static/icons/house-icon.png" alt="">
+                    <a href="#" id="open" class="badge badge-dark" onclick="OpenImage()">
+                        <img src="static/icons/open-icon.png" alt="Open File" title="Open File">
                     </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle badge badge-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="static/icons/forms-icon.png" alt="">
+                        <img src="static/icons/save-icon.png" alt="Save Image" title="Save Image">
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a href="#" id="img-save-jpg" class="badge badge-dark" onclick="SaveImage('jpg')">
+                            <img src="static/icons/jpg-icon.png" alt="Save as JPG" title="Save as JPG">
+                        </a>
+                        <a href="#" id="img-save-png" class="badge badge-dark" onclick="SaveImage('png')">
+                            <img src="static/icons/png-icon.png" alt="Save as PNG" title="Save as PNG">
+                        </a>
+                        <a href="#" id="img-save-bmp" class="badge badge-dark" onclick="SaveImage('bmp')">
+                            <img src="static/icons/bmp-icon.png" alt="Save as BMP" title="Save as BMP">
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <!-- Pick a stroke color to you draw -->
+                <li class="nav-item active">
+                    <input type="color" name="strokeColor" id="strokeColor" onmouseout="setStrokeFillColor()">
+                </li>
+                <!-- Pick a fill color to you draw -->
+                <li class="nav-item active">
+                    <input type="color" name="fillColor" id="fillColor" onmouseout="setStrokeFillColor()">
+                </li>
+                <!-- Activate the fillstate -->
+                <li class="nav-item active">
+                    <input type="checkbox" name="fillState" id="fillState" onclick="setFillState()">
+                    Preenchimento
+                </li>
+                <li class="nav-item active">
+                    <!-- Selecte the brush tool -->
+                    <a href="#" id="brush" class="badge badge-dark" onclick="ChangeTool('brush')">
+                        <img src="static/icons/brush-icon.png" alt="Brush" title="Brush">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <!-- Selecte the erase tool -->
+                    <a href="#" id="eraser" class="badge badge-dark" onclick="EraseDraw()">
+                        <img src="static/icons/eraser-icon.png" alt="Eraser" title="Eraser">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <!-- Clear the canvas -->
+                    <a href="#" id="clear" class="badge badge-dark" onclick="clearCanvas()">
+                        <img src="static/icons/clear-icon.png" alt="Clear" title="Clear">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <!-- Selecte the line tool -->
+                    <a href="#" id="line" class="badge badge-dark" onclick="ChangeTool('line')">
+                        <img src="static/icons/line-icon.png" alt="Line" title="Line">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <!-- Selecte the curve tool -->
+                    <a href="#" id="curve" class="badge badge-dark" onclick="ChangeTool('curve')">
+                        <img src="static/icons/curve-icon.png" alt="Curve" title="Curve">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <!-- Draw a letter L -->
+                    <a href="#" id="letterL" class="badge badge-dark" onclick="ChangeTool('letterL')">
+                        <img src="static/icons/letter-l-icon.png" alt="Letter L" title="Letter L">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <!-- Draw a letter W -->
+                    <a href="#" id="letterW" class="badge badge-dark" onclick="ChangeTool('letterW')">
+                        <img src="static/icons/letter-w-icon.png" alt="Letter W" title="Letter W">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <!-- Draw a car -->
+                    <a href="#" id="car" class="badge badge-dark" onclick="drawCar()">
+                        <img src="static/icons/car-icon.png" alt="Car" title="Car">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <!-- Draw a house -->
+                    <a href="#" id="house" class="badge badge-dark" onclick="drawHouse()">
+                        <img src="static/icons/house-icon.png" alt="House" title="House">
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle badge badge-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="static/icons/forms-icon.png" alt="Forms" title="Forms">
                     </a>
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <!-- Draw a rectangle -->
                         <a href="#" id="rectangle" class="dropdown-item" onclick="ChangeTool('rectangle')">
-                            <img src="static/icons/rectangle-icon.png" alt="">
+                            <img src="static/icons/rectangle-icon.png" alt="Rectangle" title="Rectangle">
                         </a>
+                        <!-- Draw a circle -->
                         <a href="#" id="circle" class="dropdown-item" onclick="ChangeTool('circle')">
-                            <img src="static/icons/circle-icon.png" alt="">
+                            <img src="static/icons/circle-icon.png" alt="Circle" title="Circle">
                         </a>
+                        <!-- Draw a ellipse -->
                         <a href="#" id="ellipse" class="dropdown-item" onclick="ChangeTool('ellipse')">
-                            <img src="static/icons/ellipse-icon.png" alt="">
+                            <img src="static/icons/ellipse-icon.png" alt="Ellipse" title="Ellipse">
                         </a>
+                        <!-- Draw a hexagon -->
                         <a href="#" id="hexagon" class="dropdown-item" onclick="ChangeTool('hexagon')">
-                            <img src="static/icons/hexagon-icon.png" alt="">
+                            <img src="static/icons/hexagon-icon.png" alt="Hexagon" title="Hexagon">
                         </a>
+                        <!-- Draw a arrow -->
                         <a href="#" id="arrow" class="dropdown-item" onclick="ChangeTool('arrow')">
-                            <img src="static/icons/arrow-icon.png" alt="">
+                            <img src="static/icons/arrow-icon.png" alt="Arrow" title="Arrow">
                         </a>
+                        <!-- Draw a triangle -->
                         <a href="#" id="triangle" class="dropdown-item" onclick="ChangeTool('triangle')">
-                            <img src="static/icons/triangle-icon.png" alt="">
+                            <img src="static/icons/triangle-icon.png" alt="Triangle" title="Triangle">
                         </a>
+                        <!-- Draw a pentagon -->
                         <a href="#" id="pentagon" class="dropdown-item" onclick="ChangeTool('pentagon')">
-                            <img src="static/icons/pentagon-icon.png" alt="">
+                            <img src="static/icons/pentagon-icon.png" alt="Pentagon" title="Pentagon">
                         </a>
+                        <!-- Draw a diamond -->
                         <a href="#" id="diamond" class="dropdown-item" onclick="ChangeTool('diamond')">
-                            <img src="static/icons/diamond-icon.png" alt="">
+                            <img src="static/icons/diamond-icon.png" alt="Diamond" title="Diamond">
                         </a>
+                        <!-- Draw a fourStar -->
                         <a href="#" id="fourStar" class="dropdown-item" onclick="ChangeTool('fourStar')">
-                            <img src="static/icons/fourStar-icon.png" alt="">
+                            <img src="static/icons/fourStar-icon.png" alt="Four Star" title="Four Star">
                         </a>
+                        <!-- Draw a fiveStar -->
                         <a href="#" id="fiveStar" class="dropdown-item" onclick="ChangeTool('fiveStar')">
-                            <img src="static/icons/fiveStar-icon.png" alt="">
+                            <img src="static/icons/fiveStar-icon.png" alt="Five Star" title="Five Star">
                         </a>
                     </div>
                 </li>
@@ -137,26 +179,52 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle badge badge-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="static/icons/download-icon.png" alt="">
+                        <img src="static/icons/download-icon.png" alt="Download" title="Download">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a href="#" id="img-file" class="badge badge-dark" download="image.jpg">
-                            <img src="static/icons/jpg-icon.png" alt="">
+                        <a href="#" id="img-file-jpg" class="badge badge-dark" download="image.jpg">
+                            <img src="static/icons/jpg-icon.png" alt="Download as JPG" title="Download as JPG">
                         </a>
-                        <a href="#" id="img-file" class="badge badge-dark" download="image.png">
-                            <img src="static/icons/png-icon.png" alt="">
+                        <a href="#" id="img-file-png" class="badge badge-dark" download="image.png">
+                            <img src="static/icons/png-icon.png" alt="Download as PNG" title="Download as PNG">
                         </a>
-                        <a href="#" id="img-file" class="badge badge-dark" download="image.bmp">
-                            <img src="static/icons/bmp-icon.png" alt="">
+                        <a href="#" id="img-file-bmp" class="badge badge-dark" download="image.bmp">
+                            <img src="static/icons/bmp-icon.png" alt="Download as BMP" title="Download as BMP">
                         </a>
                     </div>
+                </li>
+               <li class="nav-item active">
+                    <a href="#" id="open" class="badge badge-dark" data-toggle="modal" data-target="#about">
+                        <img src="static/icons/info-icon.png" alt="Open File" title="Open File">
+                    </a>
                 </li>
             </ul>
         </div>
     </nav>
+
+    <div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Developers</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body text-center">
+            <p><strong>Boccardo de Andrade</strong><br>Code: 827.969</p>
+            <p><strong>Wesley de Oliveira Mendes</strong><br>Code: 828.507</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+    </div>
+    </div>
     <br>
     <div class="container-fluid">
-        <canvas id="my-canvas" width="800px" height="800px"></canvas>
+        <canvas id="my-canvas" width="1024px" height="800px"></canvas>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
