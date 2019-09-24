@@ -13,12 +13,14 @@
 
 # Paint JS
 
-Computer Graphics work.
+College "Computer Graphics" work based on Paint.
+
+Create with Canvas using HTML, CSS and JavaScript.
 
 ## Author
 
-[Wesley Mendes](https://github.com/WesGtoX)
-[Lenin]()
+[Wesley Mendes](https://github.com/WesGtoX)  
+[Lenin](https://github.com/LeninBoccardo)  
 
 ## License
 
