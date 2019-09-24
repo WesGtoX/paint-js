@@ -46,12 +46,55 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a href="#" id="brush" class="badge badge-dark" onclick="ChangeTool('brush')"><img src="static/icons/brush-icon.png" alt=""></a>
+                        <input type="color" name="strokeColor" id="strokeColor" onmouseout="setStrokeFillColor()">
                 </li>
                 <li class="nav-item active">
-                    <a href="#" id="line" class="badge badge-dark" onclick="ChangeTool('line')"><img src="static/icons/line-icon.png" alt=""></a>
+                    <input type="color" name="fillColor" id="fillColor" onmouseout="setStrokeFillColor()">
                 </li>
-
+                <li class="nav-item active">
+                    <input type="checkbox" name="fillState" id="fillState" onclick="setFillState()">
+                    <a href="">Preenchimento</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="brush" class="badge badge-dark" onclick="ChangeTool('brush')">
+                        <img src="static/icons/brush-icon.png" alt="">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="eraser" class="badge badge-dark" onclick="ChangeTool('eraser')">
+                        <img src="static/icons/eraser-icon.png" alt="">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="line" class="badge badge-dark" onclick="ChangeTool('line')">
+                        <img src="static/icons/line-icon.png" alt="">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="curve" class="badge badge-dark" onclick="ChangeTool('curve')">
+                        <img src="static/icons/curve-icon.png" alt="">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="letterL" class="badge badge-dark" onclick="ChangeTool('letterL')">
+                        <img src="static/icons/letter-l-icon.png" alt="">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="letterW" class="badge badge-dark" onclick="ChangeTool('letterW')">
+                        <img src="static/icons/letter-w-icon.png" alt="">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="car" class="badge badge-dark" onclick="drawCar()">
+                        <img src="static/icons/car-icon.png" alt="">
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" id="house" class="badge badge-dark" onclick="drawHouse()">
+                        <img src="static/icons/house-icon.png" alt="">
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle badge badge-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="static/icons/forms-icon.png" alt="">
@@ -78,6 +121,15 @@
                         </a>
                         <a href="#" id="pentagon" class="dropdown-item" onclick="ChangeTool('pentagon')">
                             <img src="static/icons/pentagon-icon.png" alt="">
+                        </a>
+                        <a href="#" id="diamond" class="dropdown-item" onclick="ChangeTool('diamond')">
+                            <img src="static/icons/diamond-icon.png" alt="">
+                        </a>
+                        <a href="#" id="fourStar" class="dropdown-item" onclick="ChangeTool('fourStar')">
+                            <img src="static/icons/fourStar-icon.png" alt="">
+                        </a>
+                        <a href="#" id="fiveStar" class="dropdown-item" onclick="ChangeTool('fiveStar')">
+                            <img src="static/icons/fiveStar-icon.png" alt="">
                         </a>
                     </div>
                 </li>

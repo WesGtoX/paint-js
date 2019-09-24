@@ -8,14 +8,21 @@ let ctx
 let savedImageData
 // Stores whether I'm currently dragging the mouse
 let dragging = false
-let strokeColor = 'black'
-let fillColor = 'black'
+// Stores the current color of the boxes in the stroke and color variables
+let getStrokeColor = document.getElementById('strokeColor')
+let getFillColor = document.getElementById('fillColor')
+let strokeColor = getStrokeColor.value
+let fillColor = getFillColor.value
 let line_Width = 2
 let polygonSides = 6
-// Tool currently using
+// Get the state of checkbox to change or not, if the draw will be filled
+let getFillState = document.getElementById('fillState')
+let fillState = getFillState.checked
+//Tool currently using
 let currentTool = 'brush'
-let canvasWidth = 600
+let canvasWidth = 1024
 let canvasHeight = 600
+let starSpikes = 5
 
 // Stores whether I'm currently using brush
 let usingBrush = false
@@ -24,6 +31,15 @@ let brushXPoints = new Array()
 let brushYPoints = new Array()
 // Stores whether mouse is down
 let brushDownPos = new Array()
+// Erase state
+let erasing = false
+// Store X e Y points and when mouse is down
+let eraseXPoints = new Array()
+let eraseYPoints = new Array()
+let eraseDownPos = new Array()
+let cPushArray = new Array()
+let cStep = -1
+
 
 // Stores size data used to create rubber band shapes
 // that will redraw as the user moves the mouse
@@ -76,6 +92,7 @@ function setupCanvas() {
     // Get methods for manipulating the canvas
     ctx = canvas.getContext('2d')
     ctx.strokeStyle = strokeColor
+    ctx.fillStyle = fillColor
     ctx.lineWidth = line_Width
     // Execute ReactToMouseDown when the mouse is clicked
     canvas.addEventListener("mousedown", ReactToMouseDown)
@@ -88,8 +105,14 @@ function setupCanvas() {
 function ChangeTool(toolClicked) {
     document.getElementById("open").className = ""
     document.getElementById("save").className = ""
+    document.getElementById('eraser').className = ""
     document.getElementById("brush").className = ""
     document.getElementById("line").className = ""
+    document.getElementById('curve').className = ""
+    document.getElementById('letterL').className = ""
+    document.getElementById('letterW').className = ""
+    document.getElementById('car').className = ""
+    document.getElementById('house').className = ""
     document.getElementById("rectangle").className = ""
     document.getElementById("circle").className = ""
     document.getElementById("ellipse").className = ""
@@ -97,6 +120,9 @@ function ChangeTool(toolClicked) {
     document.getElementById("arrow").className = ""
     document.getElementById("triangle").className = ""
     document.getElementById("pentagon").className = ""
+    document.getElementById("diamond").className = ""
+    document.getElementById('fourStar').className = ""
+    document.getElementById('fiveStar').className = ""
 
     // Highlight the last selected tool on toolbar
     document.getElementById(toolClicked).className = "selected"
@@ -215,6 +241,13 @@ function getPolygon() {
         ctx.lineTo(polygonPoints[i].x, polygonPoints[i].y)
     }
     ctx.closePath()
+
+    if (fillState == true){
+        ctx.stroke();
+        ctx.fill();
+    } else {
+        ctx.stroke();
+    }
 }
 
 // Draw rubberband shape
@@ -227,20 +260,34 @@ function drawRubberbandShape(loc) {
         DrawBrush()
     } else if (currentTool === "line") {
         // Draw Line
+        ctx.strokeStyle = strokeColor
         ctx.beginPath()
         ctx.moveTo(mousedown.x, mousedown.y)
         ctx.lineTo(loc.x, loc.y)
         ctx.stroke()
     } else if (currentTool === "rectangle") {
         // Creates rectangles
-        ctx.strokeRect(shapeBoundingBox.left, shapeBoundingBox.top,
-            shapeBoundingBox.width, shapeBoundingBox.height)
+        if (fillState == true){
+            ctx.strokeRect(shapeBoundingBox.left, shapeBoundingBox.top,
+                shapeBoundingBox.width, shapeBoundingBox.height)
+            ctx.fillRect(shapeBoundingBox.left, shapeBoundingBox.top,
+                shapeBoundingBox.width, shapeBoundingBox.height)
+        } else {
+            ctx.strokeRect(shapeBoundingBox.left, shapeBoundingBox.top,
+              shapeBoundingBox.width, shapeBoundingBox.height)
+        }
     } else if (currentTool === "circle") {
         // Create circles
         let radius = shapeBoundingBox.width
         ctx.beginPath()
         ctx.arc(mousedown.x, mousedown.y, radius, 0, Math.PI * 2)
-        ctx.stroke()
+        
+        if(fillState == true){
+            ctx.stroke()
+            ctx.fill();
+        } else {
+            ctx.stroke();
+        }
     } else if (currentTool === "ellipse") {
         // Create ellipses
         // ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle)
@@ -248,7 +295,13 @@ function drawRubberbandShape(loc) {
         let radiusY = shapeBoundingBox.height / 2
         ctx.beginPath()
         ctx.ellipse(mousedown.x, mousedown.y, radiusX, radiusY, Math.PI / 4, 0, Math.PI * 2)
-        ctx.stroke()
+        
+        if (fillState == true){
+            ctx.stroke()
+            ctx.fill();
+        } else {
+            ctx.stroke();
+        }
     } else if (currentTool === "hexagon") {
         // Create hexagons
         polygonSides = 6
@@ -257,18 +310,36 @@ function drawRubberbandShape(loc) {
     } else if (currentTool === "arrow") {
         // Create arrows
         ctx.beginPath()
-        GetArrow(ctx, mousedown.x, mousedown.y, loc.x, loc.y)
+        GetArrow(mousedown.x, mousedown.y, loc.x, loc.y)
         ctx.stroke()
     } else if (currentTool === "triangle"){
         // Create triangles
         polygonSides = 3
         getPolygon()
         ctx.stroke()
+    } else if (currentTool === "diamond"){
+        // Create diamond
+        drawDiamond(loc.x, loc.y, shapeBoundingBox.width, shapeBoundingBox.height)
     } else if (currentTool === "pentagon"){
         // Create pentagons
         polygonSides = 5
         getPolygon()
         ctx.stroke()
+    } else if (currentTool === "curve") {
+        // Create a bezier curve
+        BezierCurve(loc.x, loc.y)
+    } else if (currentTool === "fourStar") {
+        // Create a star with four spikes
+        starSpikes = 4
+        drawStar(mousedown.x, mousedown.y, starSpikes, loc.x - mousedown.x, loc.y - mousedown.y)
+    } else if (currentTool === "fiveStar") {
+        // Create a star with five spikes
+        starSpikes = 5
+        drawStar(mousedown.x, mousedown.y, starSpikes, loc.x - mousedown.x, loc.y - mousedown.y)
+    } else if (currentTool === "letterL"){
+        DrawL(loc.x)
+    } else if (currentTool === "letterW"){
+        DrawW(loc.x)
     }
 }
 
@@ -291,6 +362,13 @@ function AddBrushPoint(x, y, mouseDown) {
     brushDownPos.push(mouseDown)
 }
 
+function AddErasePoint(x, y, mouseDown) {
+    eraseXPoints.push(x)
+    eraseYPoints.push(y)
+    // Store true that mouse is down
+    eraseDownPos.push(mouseDown)
+}
+
 // Cycle through all brush points and connect them with lines
 function DrawBrush() {
     for (let i = 1; i < brushXPoints.length; i++) {
@@ -306,6 +384,23 @@ function DrawBrush() {
         ctx.lineTo(brushXPoints[i], brushYPoints[i])
         ctx.closePath()
         ctx.stroke()
+    }
+}
+
+function EraseDraw() {
+    for (let i = 1; i < eraseXPoints.length; i++) {
+        ctx.beginPath()
+
+        // Check if the mouse button was down at this point
+        // and if so continue drawing
+        if (eraseDownPos[i]) {
+            ctx.moveTo(eraseXPoints[i-1], eraseYPoints[i-1])
+        } else {
+            ctx.moveTo(eraseXPoints[i]-1, eraseYPoints[i])
+        }
+        ctx.lineTo(eraseXPoints[i], eraseYPoints[i])
+        ctx.closePath()
+        ctx.clearRect(mousedown.x, mousedown.y, 30, 30)
     }
 }
 
@@ -327,6 +422,9 @@ function ReactToMouseDown(e) {
     if (currentTool === 'brush') {
         usingBrush = true
         AddBrushPoint(loc.x, loc.y)
+    } else if (currentTool === 'eraser'){
+        erasing = true
+        AddErasePoint(loc.x, loc.y)
     }
 }
 
@@ -361,17 +459,218 @@ function ReactToMouseUp(e) {
     usingBrush = false
 }
 
-function GetArrow(context, fromx, fromy, tox, toy) {
+// Not working
+function DrawL(x){
+    ctx.font = `${x - mousedown.x}px times new roman`
+    if(fillState == true){
+        ctx.strokeText('L', mousedown.x, mousedown.y)    
+        ctx.fillText('L', mousedown.x, mousedown.y)
+    }else{
+        ctx.strokeText('L', mousedown.x, mousedown.y)
+    }
+}
+
+function DrawW(x){
+    ctx.font = `${x - mousedown.x}px arial black`
+    if(fillState == true){
+        ctx.strokeText('W', mousedown.x, mousedown.y)    
+        ctx.fillText('W', mousedown.x, mousedown.y)
+    }else{
+        ctx.strokeText('W', mousedown.x, mousedown.y)
+    }
+}
+
+function GetArrow(fromx, fromy, tox, toy) {
     var headlen = 10; // length of head in pixels
     var dx = tox - fromx;
     var dy = toy - fromy;
     var angle = Math.atan2(dy, dx);
     // Create arrow
-    context.moveTo(fromx, fromy);
-    context.lineTo(tox, toy);
-    context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
-    context.moveTo(tox, toy);
-    context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+    ctx.beginPath()
+    ctx.moveTo(fromx, fromy);
+    ctx.lineTo(tox, toy);
+    ctx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+    ctx.moveTo(tox, toy);
+    ctx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+    ctx.stroke()
+}
+
+function BezierCurve(x, y){
+    ctx.beginPath()
+    ctx.moveTo(mousedown.x, mousedown.y)
+    ctx.bezierCurveTo(mousedown.x, x - mousedown.x, x, y - mousedown.y, y, mousedown.y)
+    ctx.stroke()
+}
+
+function drawDiamond(x, y, width, height){
+    ctx.beginPath();
+    ctx.moveTo(x, y);        
+    // top left edge
+    ctx.lineTo(x - width / 2, y + height / 2);
+    // bottom left edge
+    ctx.lineTo(x, y + height);
+    // bottom right edge
+    ctx.lineTo(x + width / 2, y + height / 2);
+    // closing the path automatically creates
+    // the top right edge
+    ctx.closePath();
+    if(fillState == true){
+        ctx.fill();
+    }else{
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+function rotation(){
+}
+
+function scale(){
+}
+
+function drawStar(cx,cy,spikes,outerRadius,innerRadius){
+    var rot=Math.PI/2*3;
+    var x=cx;
+    var y=cy;
+    var step=Math.PI/spikes;
+
+    ctx.beginPath();
+    ctx.moveTo(cx,cy-outerRadius)
+    for(i=0;i<spikes;i++){
+      x=cx+Math.cos(rot)*outerRadius;
+      y=cy+Math.sin(rot)*outerRadius;
+      ctx.lineTo(x,y)
+      rot+=step
+
+      x=cx+Math.cos(rot)*innerRadius;
+      y=cy+Math.sin(rot)*innerRadius;
+      ctx.lineTo(x,y)
+      rot+=step
+    }
+    ctx.lineTo(cx,cy-outerRadius);
+    ctx.closePath();
+    if(fillState == true){
+        ctx.fill();
+    }else{
+        ctx.stroke();
+    }
+}
+
+function drawHouse(){
+    ctx.strokeStyle = strokeColor
+    ctx.fillStyle = fillColor
+
+    // Draw a triangle for the roof
+    ctx.beginPath();
+    ctx.moveTo(100,260);
+    ctx.lineTo(300,10);
+    ctx.lineTo(500,260);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    // chimney
+    ctx.fillRect(381, 60, 45, 120);
+    ctx.strokeRect(381, 60, 45, 140);
+    ctx.ellipse(380, 55, 47, 14, 0.78539, 0, 6.283);
+    ctx.strokeRect(378, 198, 55, 5);
+    // house walls
+    //ctx.fillRect(100, 260, 400, 300);
+    ctx.strokeRect(100, 260, 400, 300);
+    // windows
+    ctx.fillRect(130, 300, 70, 45);
+    ctx.fillRect(205, 300, 70, 45);
+    ctx.fillRect(325, 300, 70, 45);
+    ctx.fillRect(400, 300, 70, 45);
+    ctx.fillRect(130, 350, 70, 45);
+    ctx.fillRect(205, 350, 70, 45);
+    ctx.fillRect(325, 350, 70, 45);
+    ctx.fillRect(400, 350, 70, 45);
+    ctx.fillRect(325, 425, 70, 45);
+    ctx.fillRect(400, 425, 70, 45);
+    ctx.fillRect(325, 475, 70, 45);
+    ctx.fillRect(400, 475, 70, 45);
+    // door lines
+    ctx.beginPath();
+    ctx.restore();
+    ctx.moveTo(200, 423);
+    ctx.lineTo(200, 560);
+    ctx.moveTo(140,433);
+    ctx.lineTo(140, 560);
+    ctx.moveTo(260,434);
+    ctx.lineTo(260, 560);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(199,562,140,1.355*Math.PI,1.65*Math.PI); // door arc
+    ctx.stroke();
+    // door handles
+    ctx.beginPath();
+    ctx.arc(185,510,5,0,2*Math.PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(215,510,5,0,2*Math.PI);
+    ctx.stroke();
+}
+
+function drawCar(){
+    ctx.strokeStyle = strokeColor
+    ctx.fillStyle = fillColor
+
+    //body
+    ctx.beginPath();
+    ctx.moveTo(25, 150);
+	ctx.bezierCurveTo(50, 130, 60, 120, 70, 120);
+	ctx.moveTo(70, 120);
+	ctx.lineTo(120, 120);
+	ctx.bezierCurveTo(140, 130, 130, 125, 160, 150);
+	ctx.quadraticCurveTo(190,160,190,180);
+	ctx.lineTo(5, 180);
+	ctx.quadraticCurveTo(5,150,25, 150);
+	ctx.closePath();
+ 
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.rect(5, 180, 185,7);
+    ctx.stroke();
+ 
+	// WINDOW
+	ctx.beginPath();
+	ctx.moveTo(75, 125);
+	ctx.lineTo(115, 125);
+	ctx.lineTo(130, 150);
+	ctx.lineTo(60, 150);
+	ctx.closePath();
+ 
+	ctx.moveTo(56, 125);
+	ctx.lineTo(72, 125);
+	ctx.lineTo(55, 150);
+	ctx.lineTo(25, 150);
+	ctx.closePath();
+ 
+	// WHEELS
+	ctx.beginPath();
+    ctx.arc(50, 180, 15,0, 2 * Math.PI, true);
+    ctx.fill()
+    ctx.stroke();
+ 
+    ctx.beginPath();
+    ctx.arc(140, 180, 15,0, 2 * Math.PI, true);
+    ctx.fill()
+    ctx.stroke();
+}
+
+// Set the new state of the checkbox
+function setFillState(){
+    fillState = getFillState.checked
+}
+
+function clearCanvas(){
+    ctx.clearRect(0, 0, canvasHeight, canvasWidth)
+}
+
+// Define the new stroke and fill color when the color inputs are changed
+function setStrokeFillColor(){
+    strokeColor = getStrokeColor.value
+    fillColor = getFillColor.value
 }
 
 
@@ -389,9 +688,9 @@ function SaveImage() {
 function OpenImage() {
     let img = new Image()
     // Once the image is loaded clear the canvas and draw it
-    img.onload = function() {
+    img.src = 'image.png'
+    img.onload = function() {  
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(img, 0, 0)
     }
-    img.src = 'image.png'
 }
