@@ -296,7 +296,7 @@ function drawRubberbandShape(loc) {
         let radiusX = shapeBoundingBox.width / 2
         let radiusY = shapeBoundingBox.height / 2
         ctx.beginPath()
-        ctx.ellipse(mousedown.x, mousedown.y, radiusX, radiusY, Math.PI / 4, 0, Math.PI * 2)
+        ctx.ellipse(mousedown.x, mousedown.y, radiusX, radiusY, Math.PI / 100, 0, Math.PI * 2)
         
         if (fillState == true){
             ctx.stroke()
@@ -464,21 +464,27 @@ function ReactToMouseUp(e) {
 // Not working
 function DrawL(x){
     ctx.font = `${x - mousedown.x}px times new roman`
-    if(fillState == true){
-        ctx.strokeText('L', mousedown.x, mousedown.y)    
-        ctx.fillText('L', mousedown.x, mousedown.y)
-    }else{
-        ctx.strokeText('L', mousedown.x, mousedown.y)
+    if(canvas.getContext){
+        window.addEventListener('keydown', moveobj, true);
+        if(fillState == true){
+            ctx.strokeText('L', mousedown.x, mousedown.y)    
+            ctx.fillText('L', mousedown.x, mousedown.y)
+        }else{
+            ctx.strokeText('L', mousedown.x, mousedown.y)
+        }
     }
 }
 
 function DrawW(x){
     ctx.font = `${x - mousedown.x}px times new roman`
-    if(fillState == true){
-        ctx.strokeText('W', mousedown.x, mousedown.y)    
-        ctx.fillText('W', mousedown.x, mousedown.y)
-    }else{
-        ctx.strokeText('W', mousedown.x, mousedown.y)
+    if(canvas.getContext){
+        window.addEventListener('keydown', moveobj, true);
+        if(fillState == true){
+            ctx.strokeText('W', mousedown.x, mousedown.y)    
+            ctx.fillText('W', mousedown.x, mousedown.y)
+        }else{
+            ctx.strokeText('W', mousedown.x, mousedown.y)
+        }
     }
 }
 
@@ -656,29 +662,78 @@ function moveobj(evt) {
     ctx.fillStyle = "#ffffff";
     ctx.rect(3, 5, 600, 350);
     ctx.fill();
+    console.log(evt.keyCode)
     switch (evt.keyCode) {
     case 65:
         // ctx.restore();
         ctx.save();
         ctx.translate(-5, 0);
-        drawCar();
+        if(currentTool === 'letterL'){
+            DrawL()
+        }else if(currentTool === 'letterW'){
+            DrawW()
+        }else{
+            drawCar()
+        }
         break;
     case 68:
         ctx.save();
         ctx.translate(5, 0);
-        drawCar();
+        if(currentTool === 'letterL'){
+            DrawL()
+        }else if(currentTool === 'letterW'){
+            DrawW()
+        }else{
+            drawCar()
+        }
         break;
     case 83:
         ctx.save()
         ctx.translate(0, 5);
-        drawCar();
+        if(currentTool === 'letterL'){
+            DrawL()
+        }else if(currentTool === 'letterW'){
+            DrawW()
+        }else{
+            drawCar()
+        }
         break;
     case 87:
         ctx.save()
         ctx.translate(0, -5);
-        drawCar();
+        if(currentTool === 'letterL'){
+            DrawL()
+        }else if(currentTool === 'letterW'){
+            DrawW()
+        }else{
+            drawCar()
+        }
+        break;
+    case 107:
+        ctx.save()
+        
+        if(currentTool === 'letterL'){
+            ctx.translate(mousedown.x, mousedown.y)
+            ctx.rotate((Math.PI/180) * 2)
+            ctx.translate(-mousedown.x, -mousedown.y)
+            DrawL()
+        }else if(currentTool === 'letterW'){
+            ctx.translate(mousedown.x, mousedown.y)
+            ctx.rotate((Math.PI/180) * 2)
+            ctx.translate(-mousedown.x, -mousedown.y)
+            DrawW()
+        }else{
+            ctx.translate(95, 150)
+            ctx.rotate((Math.PI/180) * 2)
+            ctx.translate(-95, -150)
+            drawCar()
+        }
+        break;
+    default:
         break;
     }
+
+
 }
 
 var myImage = new Image();
@@ -740,7 +795,8 @@ function drawCar(){
 
         ctx.beginPath();
         ctx.arc(140, 180, 15,0, 2 * Math.PI, true);
-        ctx.fill();       
+        ctx.fill();      
+        ctx.closePath() 
     }
     
 }
@@ -787,3 +843,5 @@ function OpenImage() {
         ctx.drawImage(img, 0, 0)
     }
 }
+
+
