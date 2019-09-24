@@ -128,7 +128,6 @@ function removeSelected() {
         try {
             toolClass.classList.remove("selected");
         } catch {
-            console.log('ERROR')
         }
     });
 }
@@ -474,7 +473,7 @@ function DrawL(x){
 }
 
 function DrawW(x){
-    ctx.font = `${x - mousedown.x}px arial black`
+    ctx.font = `${x - mousedown.x}px times new roman`
     if(fillState == true){
         ctx.strokeText('W', mousedown.x, mousedown.y)    
         ctx.fillText('W', mousedown.x, mousedown.y)
@@ -525,11 +524,43 @@ function drawDiamond(x, y, width, height){
     ctx.restore();
 }
 
+// function translation(){
+//         ctx.fillStyle = "#ffffff";
+//         ctx.rect(3, 5, 600, 350);
+//         ctx.fill();
+//         console.log(evt.keyCode)
+//         switch (evt.keyCode) {
+//             case 65:
+//                 // ctx.restore();
+//                 ctx.save();
+//                 ctx.translate(-5, 0);
+//                 drawCar();
+//                 break;
+//             case 68:
+//                 ctx.save();
+//                 ctx.translate(5, 0);
+//                 drawCar();
+//                 break;
+//             case 83:
+//                 ctx.save()
+//                 ctx.translate(0, 5);
+//                 drawCar()
+//                 break;
+//             case 87:
+//                 ctx.save()
+//                 ctx.translate(0, -5);
+//                 drawCar()
+//                 break;
+//         }
+// }
+
 function rotation(){
 }
 
 function scale(){
 }
+
+
 
 function drawStar(cx,cy,spikes,outerRadius,innerRadius){
     var rot=Math.PI/2*3;
@@ -565,7 +596,6 @@ function drawHouse(){
 
     ctx.strokeStyle = strokeColor
     ctx.fillStyle = fillColor
-
     // Draw a triangle for the roof
     ctx.beginPath();
     ctx.moveTo(100,260);
@@ -615,7 +645,44 @@ function drawHouse(){
     ctx.beginPath();
     ctx.arc(215,510,5,0,2*Math.PI);
     ctx.stroke();
+    
 }
+
+document.addEventListener('keydown', moveobj)
+
+var old = new Image();
+var next = 0;
+function moveobj(evt) {
+    ctx.fillStyle = "#ffffff";
+    ctx.rect(3, 5, 600, 350);
+    ctx.fill();
+    switch (evt.keyCode) {
+    case 65:
+        // ctx.restore();
+        ctx.save();
+        ctx.translate(-5, 0);
+        drawCar();
+        break;
+    case 68:
+        ctx.save();
+        ctx.translate(5, 0);
+        drawCar();
+        break;
+    case 83:
+        ctx.save()
+        ctx.translate(0, 5);
+        drawCar();
+        break;
+    case 87:
+        ctx.save()
+        ctx.translate(0, -5);
+        drawCar();
+        break;
+    }
+}
+
+var myImage = new Image();
+var back = new Image();
 
 function drawCar(){
     // Remove highlight the last selected tool on toolbar
@@ -623,48 +690,59 @@ function drawCar(){
 
     ctx.strokeStyle = strokeColor
     ctx.fillStyle = fillColor
+    if(canvas.getContext){
+        window.addEventListener('keydown', moveobj, true);
+        //body
+        ctx.beginPath();
+        ctx.moveTo(25, 150);
+        ctx.bezierCurveTo(50, 130, 60, 120, 70, 120);
+        ctx.moveTo(70, 120);
+        ctx.lineTo(120, 120);
+        ctx.bezierCurveTo(140, 130, 130, 125, 160, 150);
+        ctx.quadraticCurveTo(190,160,190,180);
+        ctx.lineTo(5, 180);
+        ctx.quadraticCurveTo(5,150,25, 150);
+        ctx.closePath();
+    
+        ctx.fill();
+        ctx.beginPath();
+        ctx.rect(5, 180, 185,7);
+        ctx.fill();
+    
+        // WINDOW
+        ctx.beginPath();
+        ctx.moveTo(75, 125);
+        ctx.lineTo(115, 125);
+        ctx.lineTo(130, 150);
+        ctx.lineTo(60, 150);
+        ctx.closePath();
+        var grd = ctx.createLinearGradient(70, 125, 130, 150);
+        grd.addColorStop(0, '#bbb');   
+        grd.addColorStop(1, '#696969');
+        ctx.fillStyle = grd;
+        ctx.fill();
 
-    //body
-    ctx.beginPath();
-    ctx.moveTo(25, 150);
-	ctx.bezierCurveTo(50, 130, 60, 120, 70, 120);
-	ctx.moveTo(70, 120);
-	ctx.lineTo(120, 120);
-	ctx.bezierCurveTo(140, 130, 130, 125, 160, 150);
-	ctx.quadraticCurveTo(190,160,190,180);
-	ctx.lineTo(5, 180);
-	ctx.quadraticCurveTo(5,150,25, 150);
-	ctx.closePath();
- 
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.rect(5, 180, 185,7);
-    ctx.stroke();
- 
-	// WINDOW
-	ctx.beginPath();
-	ctx.moveTo(75, 125);
-	ctx.lineTo(115, 125);
-	ctx.lineTo(130, 150);
-	ctx.lineTo(60, 150);
-	ctx.closePath();
- 
-	ctx.moveTo(56, 125);
-	ctx.lineTo(72, 125);
-	ctx.lineTo(55, 150);
-	ctx.lineTo(25, 150);
-	ctx.closePath();
- 
-	// WHEELS
-	ctx.beginPath();
-    ctx.arc(50, 180, 15,0, 2 * Math.PI, true);
-    ctx.fill()
-    ctx.stroke();
- 
-    ctx.beginPath();
-    ctx.arc(140, 180, 15,0, 2 * Math.PI, true);
-    ctx.fill()
-    ctx.stroke();
+        ctx.moveTo(56, 125);
+        ctx.lineTo(72, 125);
+        ctx.lineTo(55, 150);
+        ctx.lineTo(25, 150);
+        ctx.closePath();
+        var grd = ctx.createLinearGradient(50, 135, 100, 135);
+        grd.addColorStop(0, '#bbb');   
+        grd.addColorStop(1, '#696969');
+        ctx.fillStyle = grd;
+        ctx.fill();
+
+        // WHEELS
+        ctx.beginPath();
+        ctx.arc(50, 180, 15,0, 2 * Math.PI, true);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(140, 180, 15,0, 2 * Math.PI, true);
+        ctx.fill();       
+    }
+    
 }
 
 // Set the new state of the checkbox
